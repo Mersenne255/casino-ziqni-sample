@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>TipicoGamesWidget</title>
+</head>
+
+<body style="background: black;">
+
+<script type="text/javascript" src="https://tipicogames-stg.cdn.ziqni.com/gamification/build/javascript/ziqni-member-widget-selfinit.js"></script>
+
+<script type="module">
+  const token = new URLSearchParams(window.location.search).get('token');
+  const widgetInstance = new window._clLeaderBoardV3SelfInit({
+    autoStart: false,
+    debug: false,
+    apiKey: token,
+    memberRefId: 'Player-1',
+    enableNotifications: true,
+    currency: 'EUR',
+    hideEmptyTabs: false,
+    defaultLightTheme: false,
+    historicalData: {
+      finalisedCompetitions: 300,
+      messagesForTheLast: 300
+    },
+    awards: {
+      showExpiredAwards: true
+    },
+    instantWins: {
+      enable: true
+    },
+    partialFunctions: {
+      rewardFormatter: function (reward) {
+        let defaultRewardValue = Number.isInteger(reward.rewardValue)
+          ? reward.rewardValue
+          : Math.floor(reward.rewardValue * 100) / 100;
+
+        if (reward.rewardType?.uomSymbol) {
+          defaultRewardValue = reward.rewardType.uomSymbol + defaultRewardValue;
+        }
+
+        return defaultRewardValue;
+      }
+    },
+    leaderboard: {
+      fullLeaderboardSize: 50,
+      miniScoreBoard: {
+        rankingsCount: 2
+      },
+      pointsFormatter: function(points) {
+        if (isNaN(points)) {
+          return points;
+        }
+
+        return Math.round(points)
+      }
+    },
+    uri: {
+      translationPath: ""
+    },
+    resources: [
+      "https://tipicogames-stg.cdn.ziqni.com/gamification/build/css/theme/default-theme.css"
+    ]
+  });
+  widgetInstance.init();
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+    setTimeout(() => {
+      widgetInstance.init();
+    },3000);
+  });
+</script>
+</body>
+</html>
